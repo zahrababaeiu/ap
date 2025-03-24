@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main_EX2_PM_1_1 {
     public static void main(String[] args) {
         System.out.println("enter n:");
-        Scanner input= new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         int n = input.nextInt();
         input.close();
         System.out.println();
@@ -24,3 +24,4 @@ public class Main_EX2_PM_1_1 {
         }
     }
 }
+
