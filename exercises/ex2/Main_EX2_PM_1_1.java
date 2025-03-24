@@ -4,9 +4,9 @@ import java.util.Scanner;
 public class Main_EX2_PM_1_1 {
     public static void main(String[] args) {
         System.out.println("enter n:");
-        Scanner in = new Scanner(System.in);
-        int n = in.nextInt();
-        in.close();
+        Scanner input= new Scanner(System.in);
+        int n = input.nextInt();
+        input.close();
         System.out.println();
         for (int i = 0; i < n; i++) {
             System.out.print("*\t");
