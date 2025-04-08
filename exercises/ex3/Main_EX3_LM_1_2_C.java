@@ -41,6 +41,8 @@ class Student2 {
 }
 
 public class Main_EX3_LM_1_2_C {
+
+
     public static int MaxSize = 100;
 
     public static void main(String[] args) {
@@ -93,3 +95,4 @@ public class Main_EX3_LM_1_2_C {
         }
     }
 }
+
