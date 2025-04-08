@@ -18,6 +18,7 @@ class Students3 {
 }
 
 public class Main_EX3_LM_1_3 {
+
     public static int Maxstu = 100;
 
     public static void main(String[] args) {
