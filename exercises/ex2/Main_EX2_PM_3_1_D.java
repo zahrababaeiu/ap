@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Main_EX2_PM_3_1_D {
     public void main(String[] args) {
+
         PacmanGUI frame = new PacmanGUI();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
