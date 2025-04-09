@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
-public class Main_EX2_PM_3_1_D {
+public class main_EX2_PM_3_1_D {
     public void main(String[] args) {
 
         PacmanGUI frame = new PacmanGUI();
