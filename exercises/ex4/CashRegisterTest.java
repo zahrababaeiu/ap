@@ -26,6 +26,7 @@ class CashRegister {
 public class CashRegisterTest {
     public static void main(String[] args) {
         CashRegister cr = new CashRegister();
+
         //TEST
         cr.addItem(108.5);
         cr.addItem(4.95);
