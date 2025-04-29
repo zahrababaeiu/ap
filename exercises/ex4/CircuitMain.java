@@ -40,7 +40,6 @@ class Circuit {
 public class CircuitMain {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-
         System.out.println("State (1=ON , 0=OFF)\n-----------------");
         System.out.print("Enter switch 1 state: ");
         int switch1 = input.nextInt();
