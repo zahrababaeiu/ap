@@ -41,7 +41,6 @@ public class CircuitTester {
                 } else {
                     actLampState = "OFF";
                 }
-
                 System.out.println("First Switch: " + FirstSwitch);
                 System.out.println("Second Switch: " + SecondSwitch);
                 System.out.println("Expected Lamp State: " + extLampState);
