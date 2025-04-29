@@ -24,7 +24,6 @@ class Employee {
 
 public class EmployeeTester {
     public static void main(String[] args) {
-
         Employee harry = new Employee("Harry", 5000);
         System.out.println("Name: " + harry.getName());
         System.out.println("Salary: " + harry.getSalary());
