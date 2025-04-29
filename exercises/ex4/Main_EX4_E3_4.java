@@ -47,7 +47,6 @@ class LampControl {
 public class Main_EX4_E3_4 {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-
         System.out.println("State (1=ON , 0=OFF)\n-----------------");
         System.out.print("Enter switch 1 state: ");
         int switch1 = input.nextInt();
