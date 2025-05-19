@@ -1,14 +1,15 @@
 package ap.mid_project;
 
 public class Student extends Person {
-    private final int id;
+    private int id;
     private String major;
     private Date dateOfMembership;
 
-    public Student(String firstName, String lastName, int id, String major,Date dateOfMembership) {
+    public Student(String firstName, String lastName, int id, String major, Date dateOfMembership) {
         super(firstName, lastName);
         this.id = id;
         this.major = major;
+        this.dateOfMembership = dateOfMembership;
     }
 
     public int getId() {
@@ -30,9 +31,10 @@ public class Student extends Person {
     public Date getDate() {
         return dateOfMembership;
     }
+
     @Override
     public String toString() {
-        return "First Name: " + getFirstName() + ", Last Name: " + getLastName() + ", ID: " + getId() + ", Major: " + getMajor() + ", Date of membership: " + getDate();
+        return getFirstName() + "," + getLastName() + "," + getId() + "," + getMajor() + "," +(getDate() == null ? "null" : getDate().toString());
     }
 }
 

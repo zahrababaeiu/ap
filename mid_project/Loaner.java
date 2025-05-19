@@ -27,13 +27,10 @@ public class Loaner extends Person {
     public int getId() {
         return id;
     }
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {
-        return "Loaner Name " + getFirstName() + " " + getLastName();
+        return getFirstName() + "," + getLastName() + "," + getId();
     }
 }
 

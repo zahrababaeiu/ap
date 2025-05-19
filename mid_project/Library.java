@@ -20,14 +20,6 @@ public class Library {
         this.loanerlogin = loanerlogin;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void addBook(Book book) {
         books.add(book);
         SaveLoad saveLoad = new SaveLoad();
@@ -44,11 +36,6 @@ public class Library {
         loaners.add(loaner);
         SaveLoad saveLoad = new SaveLoad();
         saveLoad.SaveLonersToFile(loaner);
-
-    }
-
-    public void addLoan(Loan loan) {
-        loans.add(loan);
 
     }
 
@@ -83,16 +70,20 @@ public class Library {
         this.stulogin = stulogin;
     }
 
-    public boolean getstulogin() {
-        return stulogin;
-    }
-
     public void setLoanerlogin(boolean loanerlogin) {
         this.loanerlogin = loanerlogin;
     }
 
-    public boolean getloanerlogin() {
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public boolean getLoanerlogin() {
         return loanerlogin;
+    }
+
+    public boolean getStulogin() {
+        return stulogin;
     }
 }
 

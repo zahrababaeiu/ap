@@ -3,28 +3,25 @@ package ap.mid_project;
 public class Loan {
     private Book book;
     private Student student;
-    private Loaner loaner1;
-    private Loaner loaner2;
+    private Loaner loaner;
     private Date dateLoan;
     private Date dateReceive;
     private Date dateRealReceive;
 
-    public Loan(Book book, Student student, Loaner loaner1, Loaner loaner2, Person librarian) {
+    public Loan(Book book, Student student, Loaner loaner, Date dateLoan, Date dateReceive, Date dateRealReceive) {
         this.book = book;
         this.student = student;
-        this.loaner1 = loaner1;
-        this.loaner2 = loaner2;
+        this.loaner = loaner;
         this.dateLoan = dateLoan;
         this.dateReceive = dateReceive;
         this.dateRealReceive = dateRealReceive;
     }
 
-    public Book getBook() {
-        return book;
+    public Loan() {
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public Book getBook() {
+        return book;
     }
 
     public Student getStudent() {
@@ -35,35 +32,67 @@ public class Loan {
         this.student = student;
     }
 
-    public void setLoaner1(Loaner loaner1) {
-        this.loaner1 = loaner1;
+    public void setLoaner(Loaner loaner) {
+        this.loaner = loaner;
     }
 
-    public Person getLoaner1() {
-        return loaner1;
-    }
-
-    public void setloaner2(Loaner loaner2) {
-        this.loaner2 = loaner2;
-    }
-
-    public Person getloaner2() {
-        return loaner2;
-    }
-
-    public void setDateLoan(Date dateLoan) {
-        this.dateLoan = dateLoan;
+    public Person getLoaner() {
+        return loaner;
     }
 
     public Date getDateLoan() {
         return dateLoan;
     }
 
+    public void setDateLoan(Date dateLoan) {
+        this.dateLoan = dateLoan;
+    }
+
     public void setDateReceive(Date dateReceive) {
         this.dateReceive = dateReceive;
+    }
+
+    public Date getDateReceive() {
+        return dateReceive;
+    }
+
+    public void setDateRealReceive(Date dateRealReceive) {
+        this.dateRealReceive = dateRealReceive;
     }
 
     public Date getDateRealReceive() {
         return dateRealReceive;
     }
+
+    public Loan stringForm(String line) {
+        String[] parts = line.split(",");
+        String bookTitle = parts[0];
+        String bookAuthor = parts[1];
+        int studentId = Integer.parseInt(parts[2]);
+        Date dateLoan = parseDate(parts[3]);
+        Date dateReceive = parseDate(parts[4]);
+        Date dateRealReceive = parseDate(parts[5]);
+
+        Book book = new Book(bookTitle, bookAuthor, 0, 0);
+        Student student = new Student(null, null, studentId, null, null);
+
+        Loan loan = new Loan(book, student, loaner, dateLoan, dateReceive, dateRealReceive);
+        loan.setDateLoan(dateLoan);
+        loan.setDateReceive(dateReceive);
+        loan.setDateRealReceive(dateRealReceive);
+
+        return loan;
+    }
+
+    private Date parseDate(String str) {
+        if (str.equals("null")) return null;
+        String[] parts = str.split("/");
+        return new Date(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+    }
+
+    @Override
+    public String toString() {
+        return book + " | " + student + " | " + loaner + " | " + dateLoan + " | " + dateReceive + " | " + (dateRealReceive == null ? "null" : dateRealReceive);
+    }
+
 }
