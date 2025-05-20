@@ -85,5 +85,9 @@ public class Library {
     public boolean getStulogin() {
         return stulogin;
     }
+
+    public void setLoaners(ArrayList<Loaner> loaners) {
+        this.loaners = loaners;
+    }
 }
 

@@ -23,19 +23,22 @@ public class SaveLoad {
         }
     }
 
-    public void LoadStuFromFile() {
+    public ArrayList<Student> loadStuFromFile() {
+        ArrayList<Student> students = new ArrayList<>();
         try {
             File file = new File("E:/java/library/Students.txt");
             Scanner sc = new Scanner(file);
-            ArrayList<String> read = new ArrayList<>();
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
-                read.add(line);
+                Student student = new Student();
+                student.stringForm(line);
+                students.add(student);
             }
-
+            sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Error in loading file " + e.getMessage());
+            System.out.println("Error in loading file: " + e.getMessage());
         }
+        return students;
     }
 
     public void SaveLonersToFile(Loaner loaner) {
@@ -51,19 +54,22 @@ public class SaveLoad {
 
     }
 
-    public void LoadLonersFromFile() {
+    public ArrayList<Loaner> loadLoanersFromFile() {
+        ArrayList<Loaner> loaners = new ArrayList<>();
         try {
-            File file = new File("E:/java/library/Loners.txt");
+            File file = new File("E:/java/library/Loaners.txt");
             Scanner sc = new Scanner(file);
-            ArrayList<String> read = new ArrayList<>();
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
-                read.add(line);
+                Loaner loaner = new Loaner();
+                loaner.stringForm(line);
+                loaners.add(loaner);
             }
-
+            sc.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Error in loading file " + e.getMessage());
+            System.out.println("Error in loading file: " + e.getMessage());
         }
+        return loaners;
     }
 
     public void SaveBookToFile(Book book) {
@@ -75,21 +81,6 @@ public class SaveLoad {
             System.out.println("Saved Successfully");
         } catch (IOException e) {
             System.out.println("Error in save to file " + e.getMessage());
-        }
-    }
-
-    public void LoadBookFromFile() {
-        try {
-            File file = new File("E:/java/library/Books.txt");
-            Scanner sc = new Scanner(file);
-            ArrayList<String> read = new ArrayList<>();
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                read.add(line);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error in loading file " + e.getMessage());
         }
     }
 

@@ -267,6 +267,9 @@ public class Menu {
     public boolean loanerLogin() {
         //Assumption: Login without password and only with ID
         boolean state = false;
+        SaveLoad saveLoad = new SaveLoad();
+        saveLoad.loadLoanersFromFile();
+        library.setLoaners(saveLoad.loadLoanersFromFile());
         int id = Processing.getInt("Enter ID: ");
         Loaner loaner = library.getFindLoaner(id);
         if (loaner == null) {

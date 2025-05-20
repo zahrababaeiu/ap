@@ -12,6 +12,9 @@ public class Student extends Person {
         this.dateOfMembership = dateOfMembership;
     }
 
+    public Student() {
+    }
+
     public int getId() {
         return id;
     }
@@ -34,7 +37,23 @@ public class Student extends Person {
 
     @Override
     public String toString() {
-        return getFirstName() + "," + getLastName() + "," + getId() + "," + getMajor() + "," +(getDate() == null ? "null" : getDate().toString());
+        return getFirstName() + "," + getLastName() + "," + getId() + "," + getMajor() + "," + (getDate() == null ? "null" : getDate().toString());
+    }
+
+    public void stringForm(String line) {
+        String[] parts = line.split(",");
+        this.setFirstName(parts[0]);
+        this.setLastName(parts[1]);
+        this.id = Integer.parseInt(parts[2]);
+        this.setMajor(parts[3]);
+        String[] dateParts = parts[4].split("/");
+        int year = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]);
+        int day = Integer.parseInt(dateParts[2]);
+
+        this.dateOfMembership = new Date(year, month, day);
+
+
     }
 }
 
