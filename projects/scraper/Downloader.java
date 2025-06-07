@@ -1,66 +1,92 @@
 package ap.projects.scraper;
 
-import java.io.*;
-import java.nio.file.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.*;
+import java.util.regex.Pattern;
 
 public class Downloader {
-    private final String baseDomain;
-    private final String saveFolder;
 
-    public Downloader(String baseDomain, String saveFolder) {
-        this.baseDomain = baseDomain;
-        this.saveFolder = saveFolder;
+    private static final Pattern IMG_EXT = Pattern.compile("(?i)\\.(jpg|jpeg|png|gif|bmp|webp)$");
+    private static final Pattern SONG_EXT = Pattern.compile("(?i)\\.(mp3|wav|ogg|m4a)$");
+
+    private final String domainHost;
+    private final Path htmlDir;
+    private final Path imageDir;
+    private final Path songDir;
+
+    public Downloader(String domain, String outputRoot) throws IOException {
+        this.domainHost = domain.replaceFirst("^https?://", "");
+        Path root = Paths.get(outputRoot).toAbsolutePath();
+        this.htmlDir = root.resolve(Conf.HTML_DIR);
+        this.imageDir = root.resolve(Conf.IMAGE_DIR);
+        this.songDir = root.resolve(Conf.SONG_DIR);
+        createDirs();
     }
 
-    public void downloadIfValid(String urlString) {
-        try {
-            URL url = new URL(urlString);
-            String host = url.getHost();
+    public void downloadPage(String url) throws IOException {
+        Document doc = Jsoup.connect(url).get();
+        saveHtml(url, doc.outerHtml());
+        extractAndDownloadAssets(doc);
+    }
 
-            if (!host.endsWith(baseDomain)) {
-                System.out.println("Skipping (external domain): " + urlString);
-                return;
+    private void createDirs() throws IOException {
+        Files.createDirectories(htmlDir);
+        Files.createDirectories(imageDir);
+        Files.createDirectories(songDir);
+    }
+
+    private void saveHtml(String url, String html) throws IOException {
+        String safeName = sanitize(url) + ".html";
+        Files.write(htmlDir.resolve(safeName), html.getBytes());
+    }
+
+    private void extractAndDownloadAssets(Document doc) {
+        Elements imgs = doc.select("img[src]");
+        for (Element img : imgs) {
+            String src = img.absUrl("src");
+            if (!src.isEmpty()) downloadBinary(src, imageDir);
+        }
+
+        Elements audios = doc.select("audio[src], audio source[src]");
+        for (Element audio : audios) {
+            String src = audio.absUrl("src");
+            if (!src.isEmpty()) downloadBinary(src, songDir);
+        }
+
+        Elements anchors = doc.select("a[href]");
+        for (Element a : anchors) {
+            String href = a.absUrl("href");
+            if (IMG_EXT.matcher(href).find()) {
+                downloadBinary(href, imageDir);
+            } else if (SONG_EXT.matcher(href).find()) {
+                downloadBinary(href, songDir);
             }
-
-            String folderPath = getFolderPath(url);
-            Files.createDirectories(Paths.get(folderPath));
-
-            String fileName = Paths.get(url.getPath()).getFileName().toString();
-            if (fileName.isEmpty()) fileName = "index.html";
-
-            try (InputStream in = url.openStream()) {
-                Files.copy(in, Paths.get(folderPath, fileName), StandardCopyOption.REPLACE_EXISTING);
-                System.out.println("Saved to: " + folderPath + "/" + fileName);
-            } catch (IOException e) {
-                System.out.println("Error saving " + urlString + ": " + e.getMessage());
-            }
-
-        } catch (MalformedURLException e) {
-            System.out.println("Invalid URL: " + urlString);
-        } catch (IOException e) {
-            System.out.println("I/O Error: " + e.getMessage());
         }
     }
 
-    private String getFolderPath(URL url) {
-        String host = url.getHost();
-        String subdomain = host.replace("." + baseDomain, "");
-
-        StringBuilder path = new StringBuilder(saveFolder);
-        if (!subdomain.isEmpty() && !subdomain.equals("www")) {
-            path.append("/_").append(subdomain);
+    private void downloadBinary(String fileUrl, Path targetDir) {
+        try (InputStream in = new URL(fileUrl).openStream()) {
+            String filename = Paths.get(new URI(fileUrl).getPath()).getFileName().toString();
+            Files.copy(in, targetDir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println(filename);
+        } catch (Exception ex) {
+            System.err.println("error" + fileUrl);
         }
+    }
 
-        String[] parts = url.getPath().split("/");
-        for (int i = 1; i < parts.length - 1; i++) {
-            if (!parts[i].isEmpty()) {
-                path.append("/").append(parts[i]);
-            }
-        }
+    private static String sanitize(String url) {
+        return url.replaceFirst("^https?://", "").replaceAll("[^a-zA-Z0-9]", "_");
+    }
 
-        return path.toString();
+    public boolean isSameDomain(String url) {
+        return url.contains(domainHost);
     }
 }

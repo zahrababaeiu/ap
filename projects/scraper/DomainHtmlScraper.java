@@ -8,41 +8,52 @@ import java.io.IOException;
 import java.util.*;
 
 public class DomainHtmlScraper {
-    private String domainAddress;
-    private Queue<String> queue;
 
-    private HtmlFileManager htmlFileManager;
+    private final String domainAddress;
+    private final String domainHost;
+    private final Queue<String> queue;
+    private final Set<String> visited;
 
-    public DomainHtmlScraper(String domainAddress, String savePath) {
+    private final HtmlFileManager htmlFileManager;
+    private final Downloader downloader;
+
+    public DomainHtmlScraper(String domainAddress, String savePath) throws IOException {
         this.domainAddress = domainAddress;
+        this.domainHost = domainAddress.replaceFirst("^https?://", "");
         this.queue = new LinkedList<>();
-        this.htmlFileManager=new HtmlFileManager(savePath);
+        this.visited = new HashSet<>();
+        this.htmlFileManager = new HtmlFileManager(savePath);
+        this.downloader = new Downloader(domainAddress, savePath);
     }
 
-    public void start() throws IOException {
-        List<String> htmlLines = HtmlFetcher.fetchHtml(domainAddress);
-        this.htmlFileManager.save(htmlLines);
+    public void start() throws IOException, InterruptedException {
+        queue.add(domainAddress);
+        int counter = 1;
 
-        List<String> urls = HtmlParser.getAllUrlsFromList(htmlLines);
-        queue.addAll(new HashSet<>(urls));
-        int counter=1;
-
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             String url = queue.remove();
-            counter++;
-            try {
-                htmlLines = HtmlFetcher.fetchHtml(domainAddress);
-                this.htmlFileManager.save(htmlLines);
+            if (visited.contains(url)) continue;
+            visited.add(url);
 
-                urls = HtmlParser.getAllUrlsFromList(htmlLines);
-                queue.addAll(new HashSet<>(urls));
+            try {
+                List<String> htmlLines = HtmlFetcher.fetchHtml(url);
+                htmlFileManager.save(htmlLines);
+                downloader.downloadPage(url);
+                List<String> newUrls = HtmlParser.getAllUrlsFromList(htmlLines);
+                for (String u : newUrls) {
+                    if (u.contains(domainHost) && !visited.contains(u)) {
+                        queue.add(u);
+                    }
+                }
+
+                System.out.println("[" + counter++ + "] " + url + " processed (queue size: " + queue.size() + ").");
+
+                Thread.sleep(Conf.DELAY_SECONDS * 1000L);
+            } catch (Exception e) {
+                System.err.println("ERROR " + url + " -> " + e.getMessage());
             }
-            catch (Exception e){
-                System.out.println("ERROR: "+url+"\t -> "+e.getMessage());
-            }
-            System.out.println("["+counter+"] "+url+" fetch and saved (queue size:"+queue.size()+").");
         }
+
         System.out.println("Operation complete");
     }
-
 }
