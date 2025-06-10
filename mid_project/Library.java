@@ -20,6 +20,10 @@ public class Library {
         this.loanerlogin = loanerlogin;
     }
 
+    public Library() {
+
+    }
+
     public void addBook(Book book) {
         books.add(book);
         SaveLoad saveLoad = new SaveLoad();
@@ -89,5 +93,20 @@ public class Library {
     public void setLoaners(ArrayList<Loaner> loaners) {
         this.loaners = loaners;
     }
-}
 
+    public ArrayList<Loan> getLoans() {
+        return loans;
+    }
+
+    public void addLoan(Loan l) {
+        loans.add(l);
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
+    public ArrayList<Loaner> getLoaners() {
+        return loaners;
+    }
+}

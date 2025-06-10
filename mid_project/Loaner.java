@@ -27,7 +27,6 @@ public class Loaner extends Person {
     public String getLastName() {
         return super.getLastName();
     }
-
     public int getId() {
         return id;
     }
@@ -45,4 +44,3 @@ public class Loaner extends Person {
         return getFirstName() + "," + getLastName() + "," + getId();
     }
 }
-

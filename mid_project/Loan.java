@@ -36,7 +36,7 @@ public class Loan {
         this.loaner = loaner;
     }
 
-    public Person getLoaner() {
+    public Loaner getLoaner() {
         return loaner;
     }
 

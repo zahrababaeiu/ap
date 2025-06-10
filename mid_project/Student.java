@@ -15,6 +15,9 @@ public class Student extends Person {
     public Student() {
     }
 
+    public Student(String part, String part1, String part2) {
+    }
+
     public int getId() {
         return id;
     }

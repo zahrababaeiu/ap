@@ -11,7 +11,7 @@ public class Menu {
     private ArrayList<Loan> loans;
     private Loan selectedLoan;
 
-    public Menu() {
+    public Menu(Library library) {
         this.library = new Library(false, false);
         this.Processing = new Processing();
         loans = new ArrayList<>();
@@ -566,7 +566,3 @@ public class Menu {
 
     }
 }
-
-
-
-
