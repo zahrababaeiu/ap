@@ -17,13 +17,13 @@ public class DomainHtmlScraper {
     private final HtmlFileManager htmlFileManager;
     private final Downloader downloader;
 
-    public DomainHtmlScraper(String domainAddress, String savePath) throws IOException {
+    public DomainHtmlScraper(String domainAddress, String savePath, int threadCount) throws IOException {
         this.domainAddress = domainAddress;
         this.domainHost = domainAddress.replaceFirst("^https?://", "");
         this.queue = new LinkedList<>();
         this.visited = new HashSet<>();
         this.htmlFileManager = new HtmlFileManager(savePath);
-        this.downloader = new Downloader(domainAddress, savePath);
+        this.downloader = new Downloader(domainAddress, savePath, threadCount);
     }
 
     public void start() throws IOException, InterruptedException {
@@ -45,15 +45,13 @@ public class DomainHtmlScraper {
                         queue.add(u);
                     }
                 }
-
                 System.out.println("[" + counter++ + "] " + url + " processed (queue size: " + queue.size() + ").");
-
                 Thread.sleep(Conf.DELAY_SECONDS * 1000L);
             } catch (Exception e) {
                 System.err.println("ERROR " + url + " -> " + e.getMessage());
             }
         }
-
+        downloader.shutdown();
         System.out.println("Operation complete");
     }
 }
