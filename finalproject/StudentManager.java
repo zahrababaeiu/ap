@@ -3,6 +3,13 @@ package finalproject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.stream.*;
+
+
 
 public class StudentManager {
     private List<Student> students;
@@ -51,11 +58,20 @@ public class StudentManager {
     }
 
     public Student authenticateStudent(String username, String password) {
-        return students.stream()
-                .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
+        try (Stream<String> lines = Files.lines(Paths.get(STUDENTS_FILE))) {
+            return lines
+                    .map(Student::fromString)
+                    .filter(Objects::nonNull)
+                    .filter(s -> s.getUsername().equals(username) && s.getPassword().equals(password))
+                    .findFirst()
+                    .orElse(null);
+        } catch (IOException e) {
+            System.out.println("Error in reading file: " + e.getMessage());
+            return null;
+        }
     }
+
+
 
     public void displayStudents() {
         System.out.println("\n--- List of Registered Students ---");
