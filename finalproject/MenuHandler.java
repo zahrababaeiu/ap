@@ -1,6 +1,7 @@
 package finalproject;
 
 // MenuHandler.java
+
 import java.util.Scanner;
 
 public class MenuHandler {
@@ -95,7 +96,8 @@ public class MenuHandler {
             System.out.println("3. Borrow a Book");
             System.out.println("4. Return a Book");
             System.out.println("5. View Available Books");
-            System.out.println("6. Logout");
+            System.out.println("6. Search a Book");
+            System.out.println("7. Logout");
             System.out.print("Please enter your choice: ");
 
             int choice = getIntInput(1, 6);
@@ -118,6 +120,15 @@ public class MenuHandler {
                     librarySystem.displayAvailableBooks();
                     break;
                 case 6:
+                    System.out.println("Enter book title: ");
+                    String bookTitle = scanner.nextLine();
+                    System.out.println("Enter book author: ");
+                    String bookAuthor = scanner.nextLine();
+                    System.out.println("Enter book year: ");
+                    String bookYear = scanner.nextLine();
+                    librarySystem.searchBooks(bookTitle, bookAuthor, bookYear);
+                    break;
+                case 7:
                     currentUser = null;
                     System.out.println("Logged out successfully.");
                     return;
