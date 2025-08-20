@@ -20,7 +20,7 @@ public class MenuHandler {
             System.out.println("\n=== University Library Management System ===");
             System.out.println("1. Student Registration");
             System.out.println("2. Student Login");
-            System.out.println("3. View Registered Student Count");
+            System.out.println("3. Guest Login");
             System.out.println("4. Exit");
             System.out.print("Please enter your choice: ");
 
@@ -34,7 +34,7 @@ public class MenuHandler {
                     handleStudentLogin();
                     break;
                 case 3:
-                    displayStudentCount();
+                    handleGuestLogin();
                     break;
                 case 4:
                     System.out.println("Exiting system. Goodbye!");
@@ -43,6 +43,27 @@ public class MenuHandler {
                     System.out.println("Invalid option! Please try again.");
             }
             System.out.println("___________________________");
+        }
+    }
+
+    private void handleGuestLogin() {
+        System.out.println("___________________________");
+        System.out.println("Welcome to system");
+        while (true) {
+            System.out.println("1.View the number of registered students");
+            System.out.println("2.Exit");
+            System.out.print("Please enter your choice: ");
+            int choice = getIntInput(1,2);
+            switch (choice) {
+                case 1:
+                    displayStudentCount();
+                    break;
+                case 2:
+                    System.out.println("Exiting system. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
         }
     }
 
