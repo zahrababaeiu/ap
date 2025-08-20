@@ -10,7 +10,7 @@ public class Book {
         this.title = title;
         this.author = author;
         this.year = year;
-        this.loaned = loaned;
+        this.loaned = false;
     }
 
     public String getTitle() {
@@ -51,5 +51,9 @@ public class Book {
         int year = Integer.parseInt(parts[2].trim());
         boolean loaned = Boolean.parseBoolean(parts[3].trim());
         return new Book(title, author, year, loaned);
+    }
+
+    public void setLoaned(boolean Loaned) {
+        this.loaned = Loaned;
     }
 }
