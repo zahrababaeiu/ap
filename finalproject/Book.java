@@ -31,15 +31,8 @@ public class Book {
 
     @Override
     public String toString() {
-        String status;
-        if (loaned) {
-            status = "Loaned";
-        } else {
-            status = "Available";
-        }
-        return title + " , " + author + " , " + year + " , " + "ُState: " + status;
+        return title + " , " + author + " , " + year ;
     }
-
 
     public static Book fromString(String line) {
         String[] parts = line.split(",");

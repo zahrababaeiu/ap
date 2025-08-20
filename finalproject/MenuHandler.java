@@ -47,18 +47,23 @@ public class MenuHandler {
     }
 
     private void handleGuestLogin() {
-        System.out.println("___________________________");
-        System.out.println("Welcome to system");
+        System.out.println("=== Welcome to system ===");
         while (true) {
             System.out.println("1.View the number of registered students");
-            System.out.println("2.Exit");
+            System.out.println("2.Search a book");
+            System.out.println("3.Exit");
             System.out.print("Please enter your choice: ");
-            int choice = getIntInput(1,2);
+            int choice = getIntInput(1,3);
             switch (choice) {
                 case 1:
                     displayStudentCount();
                     break;
-                case 2:
+                    case 2:
+                        System.out.println("Enter Book Title: ");
+                        String bookTitle = scanner.nextLine();
+                        librarySystem.searchBooks(bookTitle);
+                        break;
+                case 3:
                     System.out.println("Exiting system. Goodbye!");
                     return;
                 default:

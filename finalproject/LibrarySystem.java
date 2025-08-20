@@ -79,18 +79,22 @@ public class LibrarySystem {
         }
 
         if (result.isEmpty()) {
-            System.out.println("Book not found.");
+            System.out.println("---Book not found---");
         } else {
-            System.out.println("Found books:");
+            System.out.println("---Found books---");
             for (Book book : result) {
                 System.out.println(book);
                 if (book.isLoaned()) {
-                    System.out.println("Available State: No");
+                    System.out.println("Available State: No"+"\n");
                 } else {
-                    System.out.println("Available State: Yes");
+                    System.out.println("Available State: Yes"+"\n");
                 }
             }
         }
+    }
+
+    public void searchBooks(String title) {
+        searchBooks(title, null, null);
     }
 
     public int getStudentCount() {
