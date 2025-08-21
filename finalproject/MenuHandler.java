@@ -21,7 +21,8 @@ public class MenuHandler {
             System.out.println("1. Student Registration");
             System.out.println("2. Student Login");
             System.out.println("3. Guest Login");
-            System.out.println("4. Exit");
+            System.out.println("4. Admin Login");
+            System.out.println("5. Exit");
             System.out.print("Please enter your choice: ");
 
             int choice = getIntInput(1, 5);
@@ -37,6 +38,8 @@ public class MenuHandler {
                     handleGuestLogin();
                     break;
                 case 4:
+                    adminMenuHandler();
+                case 5:
                     System.out.println("Exiting system. Goodbye!");
                     return;
                 default:
@@ -46,8 +49,29 @@ public class MenuHandler {
         }
     }
 
+    private void adminMenuHandler() {
+        System.out.println("\n=== Admin Menu ===");
+        while (true) {
+            System.out.println("1. Add Librarian");
+            System.out.println("2. Exit");
+            System.out.print("Please enter your choice: ");
+            int choice = getIntInput(1,2);
+            switch (choice) {
+                case 1:
+                    handleLibrarianRegistration();
+                    break;
+                case 2:
+                    System.out.println("Exiting system. Goodbye!");
+                    System.out.println("--------------------");
+                    return;
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
+        }
+    }
+
     private void handleGuestLogin() {
-        System.out.println("=== Welcome to system ===");
+        System.out.println("\n=== Welcome to system ===");
         while (true) {
             System.out.println("1.View the number of registered students");
             System.out.println("2.Search a book");
@@ -68,7 +92,6 @@ public class MenuHandler {
                     displayStudentCount();
                     displayBooksCount();
                     displayLoanedBookCount();
-
                     break;
                 case 4:
                     System.out.println("Exiting system. Goodbye!");
@@ -79,9 +102,25 @@ public class MenuHandler {
         }
     }
 
+    private void handleLibrarianRegistration() {
+        System.out.println("Enter Librarian Name:");
+        String librarianName = scanner.nextLine();
+        System.out.println("Enter Librarian ID:");
+        String librarianId = scanner.nextLine();
+        System.out.println("Enter Librarian Username:");
+        String librarianUsername = scanner.nextLine();
+        System.out.println("Enter Librarian Password:");
+        String librarianPassword = scanner.nextLine();
+        Librarian newLibrarian = new Librarian(librarianName,librarianId,librarianUsername,librarianPassword);
+        librarySystem.addLibrarian(newLibrarian);
+
+        System.out.println("Librarian registered successfully!");
+
+    }
+
     private void displayLoanedBookCount() {
         int loanedBook = librarySystem.getLoanedBooksCount();
-        System.out.println("Total loaned Books: " + loanedBook +"\n");
+        System.out.println("Total loaned Books: " + loanedBook + "\n");
     }
 
     private void displayStudentCount() {

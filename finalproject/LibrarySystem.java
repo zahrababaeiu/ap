@@ -15,6 +15,7 @@ public class LibrarySystem {
     private List<Book> books;
     private String LOANS_FILE = "loans.txt";
     private List<Loan> loans;
+    private List<Librarian>librarians;
 
 
     public LibrarySystem() {
@@ -22,8 +23,12 @@ public class LibrarySystem {
         this.menuHandler = new MenuHandler(this);
         this.books = new ArrayList<>();
         this.loans = new ArrayList<>();
+        this.librarians = new ArrayList<>();
     }
 
+    public void addLibrarian(Librarian librarian) {
+        librarians.add(librarian);
+    }
 
     public void loadBooks() {
         books.clear();
@@ -260,6 +265,7 @@ public class LibrarySystem {
         LibrarySystem system = new LibrarySystem();
         system.start();
     }
+
 
 
 }
