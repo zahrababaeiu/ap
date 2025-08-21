@@ -10,7 +10,7 @@ public class Book {
         this.title = title;
         this.author = author;
         this.year = year;
-        this.loaned = false;
+        this.loaned = loaned;
     }
 
     public String getTitle() {
@@ -31,12 +31,12 @@ public class Book {
 
     @Override
     public String toString() {
-        return title + " , " + author + " , " + year ;
+        return title + " , " + author + " , " + year;
     }
 
     public static Book fromString(String line) {
         String[] parts = line.split(",");
-        if (parts.length != 4){
+        if (parts.length != 4) {
             return null;
         }
         String title = parts[0].trim();

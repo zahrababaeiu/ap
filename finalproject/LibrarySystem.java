@@ -85,9 +85,9 @@ public class LibrarySystem {
             for (Book book : result) {
                 System.out.println(book);
                 if (book.isLoaned()) {
-                    System.out.println("Available State: No"+"\n");
+                    System.out.println("Available State: No" + "\n");
                 } else {
-                    System.out.println("Available State: Yes"+"\n");
+                    System.out.println("Available State: Yes" + "\n");
                 }
             }
         }
@@ -99,6 +99,26 @@ public class LibrarySystem {
 
     public int getStudentCount() {
         return this.studentManager.getStudentCount();
+    }
+
+    public int getBooksCount() {
+        if (books.isEmpty()) {
+            loadBooks();
+        }
+        return books.size();
+    }
+
+    public int getLoanedBooksCount() {
+        if (books.isEmpty()) {
+            loadBooks();
+        }
+        int count = 0;
+        for (Book b : books) {
+            if (b.isLoaned()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public void registerStudent(String name, String studentId, String username, String password) {
@@ -127,7 +147,7 @@ public class LibrarySystem {
                 bookToBorrow = book;
                 break;
             }
-    }
+        }
 
         if (bookToBorrow == null) {
             System.out.println("Book not available for borrowing");
@@ -153,9 +173,9 @@ public class LibrarySystem {
         int rd = input.nextInt();
         Date returnDate = new Date(ry, rm, rd);
 
-        Loan loan = new Loan(student, bookToBorrow, borrowDate, returnDate,null);
+        Loan loan = new Loan(student, bookToBorrow, borrowDate, returnDate, null);
         loans.add(loan);
-        saveLoanToFile(student, bookToBorrow, borrowDate, returnDate,null);
+        saveLoanToFile(student, bookToBorrow, borrowDate, returnDate, null);
 
         System.out.println("Book borrowed successfully!");
         System.out.println("Borrow date: " + borrowDate.getYear() + "/" + borrowDate.getMonth() + "/" + borrowDate.getDay());
@@ -240,4 +260,6 @@ public class LibrarySystem {
         LibrarySystem system = new LibrarySystem();
         system.start();
     }
+
+
 }

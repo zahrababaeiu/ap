@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.stream.*;
 
 
-
 public class StudentManager {
     private List<Student> students;
     private final String STUDENTS_FILE = "students.txt";
@@ -70,8 +69,6 @@ public class StudentManager {
             return null;
         }
     }
-
-
 
     public void displayStudents() {
         System.out.println("\n--- List of Registered Students ---");

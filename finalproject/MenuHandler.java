@@ -51,19 +51,26 @@ public class MenuHandler {
         while (true) {
             System.out.println("1.View the number of registered students");
             System.out.println("2.Search a book");
-            System.out.println("3.Exit");
+            System.out.println("3.View students and books information");
+            System.out.println("4.Exit");
             System.out.print("Please enter your choice: ");
-            int choice = getIntInput(1,3);
+            int choice = getIntInput(1, 4);
             switch (choice) {
                 case 1:
                     displayStudentCount();
                     break;
-                    case 2:
-                        System.out.println("Enter Book Title: ");
-                        String bookTitle = scanner.nextLine();
-                        librarySystem.searchBooks(bookTitle);
-                        break;
+                case 2:
+                    System.out.println("Enter Book Title: ");
+                    String bookTitle = scanner.nextLine();
+                    librarySystem.searchBooks(bookTitle);
+                    break;
                 case 3:
+                    displayStudentCount();
+                    displayBooksCount();
+                    displayLoanedBookCount();
+
+                    break;
+                case 4:
                     System.out.println("Exiting system. Goodbye!");
                     return;
                 default:
@@ -72,9 +79,19 @@ public class MenuHandler {
         }
     }
 
+    private void displayLoanedBookCount() {
+        int loanedBook = librarySystem.getLoanedBooksCount();
+        System.out.println("Total loaned Books: " + loanedBook +"\n");
+    }
+
     private void displayStudentCount() {
         int studentCount = librarySystem.getStudentCount();
         System.out.println("\nTotal registered students: " + studentCount);
+    }
+
+    private void displayBooksCount() {
+        int bookCount = librarySystem.getBooksCount();
+        System.out.println("Total books: " + bookCount);
     }
 
     private void handleStudentRegistration() {
