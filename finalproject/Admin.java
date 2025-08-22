@@ -7,7 +7,7 @@ import java.util.List;
 public class Admin {
 
     private List<Librarian> librarians;
-    private final String LIBRARIANS_FILE = "E:\\librarians.txt";
+    public final String LIBRARIANS_FILE = "E:\\librarians.txt";
 
     public Admin() {
         librarians = new ArrayList<>();

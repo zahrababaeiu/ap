@@ -28,4 +28,8 @@ public class Information {
     public String getPassword() {
         return password;
     }
+
+    protected void setPassword(String librarianPassword) {
+        this.password = librarianPassword;
+    }
 }

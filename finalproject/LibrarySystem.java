@@ -15,8 +15,7 @@ public class LibrarySystem {
     private List<Book> books;
     private String LOANS_FILE = "loans.txt";
     private List<Loan> loans;
-    private List<Librarian>librarians;
-
+    private List<Librarian> librarians;
 
     public LibrarySystem() {
         this.studentManager = new StudentManager();
@@ -257,6 +256,35 @@ public class LibrarySystem {
         System.out.println("Not implemented.");
     }
 
+    public void changeLibrarianPassword(String username, String newPassword) {
+        Admin admin = new Admin();
+        List<Librarian> librarians = admin.loadLibrarians();
+        boolean found = false;
+
+        for (Librarian lib : librarians) {
+            if (lib.getUserName().equals(username)) {
+                lib.setLibrariabPassword(newPassword);
+                found = true;
+                break;
+            }
+        }
+
+        if (found) {
+
+            try (FileWriter writer = new FileWriter(admin.LIBRARIANS_FILE)) {
+                for (Librarian lib : librarians) {
+                    writer.write(lib.toFileString() + "\n");
+                }
+                System.out.println("Password changed successfully!");
+                System.out.println("------------------------------");
+            } catch (IOException e) {
+                System.out.println("Error saving librarians: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Librarian not found!");
+        }
+    }
+
     public void start() {
         menuHandler.displayMainMenu();
     }
@@ -265,7 +293,6 @@ public class LibrarySystem {
         LibrarySystem system = new LibrarySystem();
         system.start();
     }
-
 
 
 }

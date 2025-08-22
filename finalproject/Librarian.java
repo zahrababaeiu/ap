@@ -18,6 +18,11 @@ public class Librarian extends Information {
         return super.getUserName();
     }
 
+    public void setLibrariabPassword(String librarianPassword) {
+
+        super.setPassword(librarianPassword);
+    }
+
     public String getLibrarainPassword() {
         return super.getPassword();
     }
@@ -26,7 +31,7 @@ public class Librarian extends Information {
     public String toString() {
         return "Name:" + getLibrarianName() + ","
                 + "Id:" + getLibrarianId() + ","
-                + "Username:" + getLibrarianUsername()+","
+                + "Username:" + getLibrarianUsername() + ","
                 + "Password:" + getLibrarainPassword();
     }
 
