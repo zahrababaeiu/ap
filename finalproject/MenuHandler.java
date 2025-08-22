@@ -2,6 +2,7 @@ package finalproject;
 
 // MenuHandler.java
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuHandler {
@@ -22,10 +23,11 @@ public class MenuHandler {
             System.out.println("2. Student Login");
             System.out.println("3. Guest Login");
             System.out.println("4. Admin Login");
-            System.out.println("5. Exit");
+            System.out.println("5. Librarian Login");
+            System.out.println("6. Exit");
             System.out.print("Please enter your choice: ");
 
-            int choice = getIntInput(1, 5);
+            int choice = getIntInput(1, 6);
 
             switch (choice) {
                 case 1:
@@ -39,7 +41,11 @@ public class MenuHandler {
                     break;
                 case 4:
                     adminMenuHandler();
+                    break;
                 case 5:
+                    handelLibrarianlogin();
+                    break;
+                case 6:
                     System.out.println("Exiting system. Goodbye!");
                     return;
                 default:
@@ -49,13 +55,55 @@ public class MenuHandler {
         }
     }
 
+    private void handelLibrarianlogin() {
+        System.out.print("Enter your Username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter your Password: ");
+        String password = scanner.nextLine();
+        Admin admin = new Admin();
+        List<Librarian> librarians = admin.loadLibrarians();
+
+        boolean found = false;
+        for (Librarian lib : librarians) {
+            if (lib.getLibrarianUsername().equals(username) && lib.getPassword().equals(password)) {
+                System.out.println("Welcome Librarian " + lib.getName());
+                found = true;
+                librarianMenueHandel();
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Invalid username or password. Try again.");
+        }
+
+    }
+
+    private void librarianMenueHandel() {
+        System.out.println("\n=== Liabrarian Menu ===");
+        while (true) {
+            System.out.println("1. Exit");
+            System.out.println("Please enter your choice: ");
+            int choice = getIntInput(1, 2);
+            switch (choice) {
+                case 1:
+                    System.out.println("Exiting system. Goodbye!");
+                    System.out.println("------------------------");
+                    return;
+
+                default:
+                    System.out.println("Invalid option! Please try again.");
+            }
+        }
+    }
+
     private void adminMenuHandler() {
         System.out.println("\n=== Admin Menu ===");
         while (true) {
             System.out.println("1. Add Librarian");
             System.out.println("2. Exit");
             System.out.print("Please enter your choice: ");
-            int choice = getIntInput(1,2);
+            int choice = getIntInput(1, 2);
             switch (choice) {
                 case 1:
                     handleLibrarianRegistration();
@@ -111,9 +159,10 @@ public class MenuHandler {
         String librarianUsername = scanner.nextLine();
         System.out.println("Enter Librarian Password:");
         String librarianPassword = scanner.nextLine();
-        Librarian newLibrarian = new Librarian(librarianName,librarianId,librarianUsername,librarianPassword);
+        Librarian newLibrarian = new Librarian(librarianName, librarianId, librarianUsername, librarianPassword);
         librarySystem.addLibrarian(newLibrarian);
-
+        Admin admin = new Admin();
+        admin.saveLibrariantoFile(newLibrarian);
         System.out.println("Librarian registered successfully!");
 
     }

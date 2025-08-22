@@ -24,9 +24,10 @@ public class Librarian extends Information {
 
     @Override
     public String toString() {
-        return "Name:" + getLibrarianName() + "|"
-                + "Id:" + getLibrarianId() + "|"
-                + "Username:" + getLibrarianUsername();
+        return "Name:" + getLibrarianName() + ","
+                + "Id:" + getLibrarianId() + ","
+                + "Username:" + getLibrarianUsername()+","
+                + "Password:" + getLibrarainPassword();
     }
 
     public static Librarian fromString(String line) {

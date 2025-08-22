@@ -7,39 +7,39 @@ import java.util.List;
 public class Admin {
 
     private List<Librarian> librarians;
-    private final String LIBRARIANS_FILE = "librarians.txt";
+    private final String LIBRARIANS_FILE = "E:\\librarians.txt";
 
     public Admin() {
         librarians = new ArrayList<>();
         loadLibrarians();
     }
 
-    private void loadLibrarians() {
+    public List<Librarian> loadLibrarians() {
+        List<Librarian> librarians = new ArrayList<>();
         File file = new File(LIBRARIANS_FILE);
-        if (!file.exists()) return;
+        if (!file.exists()) {
+            return librarians;
+        }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = br.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 Librarian librarian = Librarian.fromString(line);
-                if (librarian != null) {
-                    librarians.add(librarian);
-                }
+                if (librarian != null) librarians.add(librarian);
             }
         } catch (IOException e) {
             System.out.println("Error loading librarians: " + e.getMessage());
         }
+        return librarians;
     }
 
-    private void saveLibrariantoFile(Librarian librarian) {
-        try {
-            FileWriter writer = new FileWriter(LIBRARIANS_FILE , true);
-            for (Librarian lib : librarians) {
-                writer.write(lib.toFileString());
-            }
-            writer.close();
+
+    public void saveLibrariantoFile(Librarian librarian) {
+        try (FileWriter writer = new FileWriter(LIBRARIANS_FILE, true)) {
+            writer.write(librarian.toFileString() + "\n");
         } catch (IOException e) {
-            System.out.println("Error saving books to file: " + e.getMessage());
+            System.out.println("Error saving librarian: " + e.getMessage());
         }
     }
+
 }
