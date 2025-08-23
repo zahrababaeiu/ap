@@ -52,7 +52,7 @@ public class LibrarySystem {
     public void saveBooksToFile(String filePath) {
 
         try {
-            FileWriter writer = new FileWriter(filePath);
+            FileWriter writer = new FileWriter(filePath,true);
             for (Book book : books) {
                 writer.write(book.getTitle() + ","
                         + book.getAuthor() + ","
@@ -283,6 +283,22 @@ public class LibrarySystem {
         } else {
             System.out.println("Librarian not found!");
         }
+    }
+
+    public void addNewBook() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter new book title:");
+        String title = scanner.nextLine().trim();
+        System.out.println("Enter new book author:");
+        String author = scanner.nextLine().trim();
+        System.out.println("Enter book year:");
+        int year = scanner.nextInt();
+        Book book = new Book(title, author, year, false);
+        books.add(book);
+        saveBooksToFile(BOOKS_FILE);
+        System.out.println("Book added successfully!");
+        System.out.println("------------------------");
+
     }
 
     public void start() {

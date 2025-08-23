@@ -80,12 +80,13 @@ public class MenuHandler {
     }
 
     private void librarianMenueHandel() {
-        System.out.println("\n=== Liabrarian Menu ===");
+        System.out.println("\n=== Librarian Menu ===");
         while (true) {
             System.out.println("1. Change Password");
-            System.out.println("2. Exit");
+            System.out.println("2. Add new book");
+            System.out.println("3. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 2);
+            int choice = getIntInput(1, 3);
             switch (choice) {
                 case 1:
                     System.out.println("Enter your Username: ");
@@ -96,6 +97,10 @@ public class MenuHandler {
                     break;
 
                 case 2:
+                    librarySystem.addNewBook();
+                    break;
+
+                case 3:
                     System.out.println("Exiting system. Goodbye!");
                     System.out.println("------------------------");
                     return;
