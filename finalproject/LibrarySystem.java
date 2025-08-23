@@ -52,7 +52,7 @@ public class LibrarySystem {
     public void saveBooksToFile(String filePath) {
 
         try {
-            FileWriter writer = new FileWriter(filePath,true);
+            FileWriter writer = new FileWriter(filePath, true);
             for (Book book : books) {
                 writer.write(book.getTitle() + ","
                         + book.getAuthor() + ","
@@ -301,6 +301,67 @@ public class LibrarySystem {
 
     }
 
+    public void editBooksInformations() {
+        Scanner scanner = new Scanner(System.in);
+        loadBooks();
+
+        System.out.println("Enter Book name:");
+        String bookname = scanner.nextLine().trim();
+        System.out.println("Enter Book author:");
+        String author = scanner.nextLine().trim();
+        System.out.println("Enter Book year:");
+        String year = scanner.nextLine().trim();
+
+        Book bookToEdit = null;
+
+        for (Book book : books) {
+            if (!bookname.isEmpty() && !book.getTitle().trim().equalsIgnoreCase(bookname)) {
+                continue;
+            }
+            if (!author.isEmpty() && !book.getAuthor().trim().equalsIgnoreCase(author)) {
+                continue;
+            }
+            if (!year.isEmpty() && book.getYear() != Integer.parseInt(year)) {
+                continue;
+            }
+
+            bookToEdit = book;
+            break;
+        }
+
+        if (bookToEdit == null) {
+            System.out.println("---Book not found---");
+            return;
+        }
+
+        System.out.println("Enter new title:");
+        String newTitle = scanner.nextLine().trim();
+        System.out.println("Enter new author:");
+        String newAuthor = scanner.nextLine().trim();
+        System.out.println("Enter new year:");
+        int newYear = Integer.parseInt(scanner.nextLine().trim());
+
+        bookToEdit.setTitle(newTitle);
+        bookToEdit.setAuthor(newAuthor);
+        bookToEdit.setYear(newYear);
+        bookToEdit.setLoaned(false);
+
+        try {
+            FileWriter writer = new FileWriter(BOOKS_FILE);
+            for (Book book : books) {
+                writer.write(book.getTitle() + ","
+                        + book.getAuthor() + ","
+                        + book.getYear() + ","
+                        + book.isLoaned() + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving books to file: " + e.getMessage());
+        }
+        System.out.println("Book edited successfully!");
+        System.out.println("-------------------------");
+    }
+
     public void start() {
         menuHandler.displayMainMenu();
     }
@@ -309,6 +370,5 @@ public class LibrarySystem {
         LibrarySystem system = new LibrarySystem();
         system.start();
     }
-
 
 }

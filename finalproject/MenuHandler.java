@@ -84,9 +84,10 @@ public class MenuHandler {
         while (true) {
             System.out.println("1. Change Password");
             System.out.println("2. Add new book");
-            System.out.println("3. Exit");
+            System.out.println("3. Edit book information");
+            System.out.println("4. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 3);
+            int choice = getIntInput(1, 4);
             switch (choice) {
                 case 1:
                     System.out.println("Enter your Username: ");
@@ -101,8 +102,10 @@ public class MenuHandler {
                     break;
 
                 case 3:
-                    System.out.println("Exiting system. Goodbye!");
-                    System.out.println("------------------------");
+                    librarySystem.editBooksInformations();
+                    break;
+
+                case 4:
                     return;
 
                 default:
@@ -123,8 +126,6 @@ public class MenuHandler {
                     handleLibrarianRegistration();
                     break;
                 case 2:
-                    System.out.println("Exiting system. Goodbye!");
-                    System.out.println("--------------------");
                     return;
                 default:
                     System.out.println("Invalid option! Please try again.");
@@ -156,7 +157,6 @@ public class MenuHandler {
                     displayLoanedBookCount();
                     break;
                 case 4:
-                    System.out.println("Exiting system. Goodbye!");
                     return;
                 default:
                     System.out.println("Invalid option! Please try again.");
