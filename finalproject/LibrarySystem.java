@@ -1,8 +1,6 @@
 package finalproject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,7 +11,7 @@ public class LibrarySystem {
     private MenuHandler menuHandler;
     private final String BOOKS_FILE = "E:/books.txt";
     private List<Book> books;
-    private String LOANS_FILE = "loans.txt";
+    private String LOANS_FILE = "E:/loans.txt";
     private List<Loan> loans;
     private List<Librarian> librarians;
 
@@ -371,4 +369,81 @@ public class LibrarySystem {
         system.start();
     }
 
+    public void cheking(List<Student> students, List<Book> books) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter today's date (Year/Month/Day): ");
+        String todayStr = scanner.nextLine().trim();
+
+        String[] parts = todayStr.split("/");
+        Date today = new Date(
+                Integer.parseInt(parts[0]),
+                Integer.parseInt(parts[1]),
+                Integer.parseInt(parts[2])
+        );
+
+        List<Loan> validLoans = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(LOANS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+
+                String username = fields[0].split(":")[1].trim();
+                String booktitle = fields[3].split(":")[1].trim();
+
+                Student student = null;
+                for (Student s : students) {
+                    if (s.getUsername().equals(username)) {
+                        student = s;
+                        break;
+                    }
+                }
+
+                Book book = null;
+                for (Book b : books) {
+                    if (b.getTitle().equals(booktitle)) {
+                        book = b;
+                        break;
+                    }
+                }
+
+                if (student == null || book == null) {
+                    System.out.println("Student or Book not found");
+                    continue;
+                }
+
+                Loan loan = Loan.fromString(line, student, book);
+                if (loan != null) {
+                    Date loanDate = loan.getBorrowDate();
+
+                    if (loanDate.equals(today) || loanDate.isYesterdayOf(today)) {
+                        validLoans.add(loan);
+                        System.out.println("Request approved for " + student.getName() + " - " + book.getTitle());
+                    } else {
+                        System.out.println("Request rejected for " + student.getName() + " - " + book.getTitle());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error reading loans: " + e.getMessage());
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(LOANS_FILE, false))) {
+            for (Loan loan : validLoans) {
+                bw.write(loan.toFileString());
+                bw.newLine();
+            }
+        } catch (Exception e) {
+            System.out.println("Error writing loans: " + e.getMessage());
+        }
+
+        System.out.println("Loan requests validated and saved.");
+    }
+
+    public List<Book> getBooks() {
+        if (books.isEmpty()) {
+            loadBooks();
+        }
+        return new ArrayList<>(books);
+    }
 }

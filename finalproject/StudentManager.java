@@ -88,4 +88,9 @@ public class StudentManager {
     public int getStudentCount() {
         return students.size();
     }
+
+    public List<Student> getAllStudents() {
+        return new ArrayList<>(students);
+
+    }
 }

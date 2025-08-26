@@ -17,7 +17,6 @@ public class Loan {
         this.actualReturnDate = actualReturnDate;
     }
 
-
     public Book getBook() {
         return book;
     }
@@ -64,6 +63,58 @@ public class Loan {
                 ", Return Date: " + returnDate +
                 ", Return status : " + result +
                 ", Actual Return Date : " + actualReturnDate;
+    }
+
+    public String toFileString() {
+        String result;
+        if (returned) {
+            result = "Yes";
+        } else {
+            result = "No";
+        }
+        return student.getUsername() + "," +
+                book.getTitle() + "," +
+                borrowDate.toString() + "," +
+                returnDate.toString() + "," +
+                returned + result + "," +
+                (actualReturnDate != null ? actualReturnDate.toString() : "null");
+    }
+
+    public static Loan fromString(String line, Student student, Book book) {
+        String[] parts = line.split(",");
+        if (parts.length < 6) {
+            return null;
+        }
+
+        String[] borrowParts = parts[2].split("/");
+        Date borrowDate = new Date(
+                Integer.parseInt(borrowParts[0]),
+                Integer.parseInt(borrowParts[1]),
+                Integer.parseInt(borrowParts[2])
+        );
+
+        String[] returnParts = parts[3].split("/");
+        Date returnDate = new Date(
+                Integer.parseInt(returnParts[0]),
+                Integer.parseInt(returnParts[1]),
+                Integer.parseInt(returnParts[2])
+        );
+
+        boolean returned = parts[4].equalsIgnoreCase("Yes");
+
+        Date actualReturnDate = null;
+        if (!parts[5].equals("null")) {
+            String[] actualParts = parts[5].split("/");
+            actualReturnDate = new Date(
+                    Integer.parseInt(actualParts[0]),
+                    Integer.parseInt(actualParts[1]),
+                    Integer.parseInt(actualParts[2])
+            );
+        }
+
+        Loan loan = new Loan(student, book, borrowDate, returnDate, actualReturnDate);
+        loan.setReturned(returned);
+        return loan;
     }
 }
 

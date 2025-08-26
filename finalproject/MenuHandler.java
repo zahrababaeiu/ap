@@ -2,6 +2,7 @@ package finalproject;
 
 // MenuHandler.java
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,11 +10,13 @@ public class MenuHandler {
     private Scanner scanner;
     private LibrarySystem librarySystem;
     private Student currentUser;
+    private StudentManager studentManager;
 
     public MenuHandler(LibrarySystem librarySystem) {
         this.scanner = new Scanner(System.in);
         this.librarySystem = librarySystem;
         this.currentUser = null;
+        this.studentManager = new StudentManager();
     }
 
     public void displayMainMenu() {
@@ -85,9 +88,10 @@ public class MenuHandler {
             System.out.println("1. Change Password");
             System.out.println("2. Add new book");
             System.out.println("3. Edit book information");
-            System.out.println("4. Exit");
+            System.out.println("4. Checking and confirming book loans");
+            System.out.println("5. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 4);
+            int choice = getIntInput(1, 5);
             switch (choice) {
                 case 1:
                     System.out.println("Enter your Username: ");
@@ -106,6 +110,13 @@ public class MenuHandler {
                     break;
 
                 case 4:
+
+                    List<Student> students = studentManager.getAllStudents();
+                    List<Book> books = librarySystem.getBooks();
+                    librarySystem.cheking(students, books);
+                    break;
+
+                case 5:
                     return;
 
                 default:
@@ -245,7 +256,7 @@ public class MenuHandler {
             System.out.println("7. Logout");
             System.out.print("Please enter your choice: ");
 
-            int choice = getIntInput(1, 6);
+            int choice = getIntInput(1, 7);
 
             switch (choice) {
                 case 1:

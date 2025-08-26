@@ -23,9 +23,25 @@ public class Date {
         return day;
 
     }
+
     @Override
     public String toString() {
         return year + "/" + month + "/" + day;
     }
+
+    public boolean equals(Date other) {
+        return this.year == other.year &&
+                this.month == other.month &&
+                this.day == other.day;
+    }
+
+    public boolean isYesterdayOf(Date other) {
+
+        if (this.year == other.year && this.month == other.month) {
+            return this.day == other.day - 1;
+        }
+        return false;
+    }
+
 }
 
