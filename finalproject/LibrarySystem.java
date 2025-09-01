@@ -446,4 +446,60 @@ public class LibrarySystem {
         }
         return new ArrayList<>(books);
     }
+
+    private void loadLoans() {
+        loans.clear();
+        try {
+            File file = new File(LOANS_FILE);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    Loan loan = Loan.fromString(line, null, null);
+                    if (loan != null) {
+                        loans.add(loan);
+                    }
+                }
+            }
+            scanner.close();
+        } catch (IOException e) {
+            System.out.println("Error in reading file: " + e.getMessage());
+        }
+    }
+
+    public void studentLoanReport(String stuusername) {
+        List<Loan> loanList = new ArrayList<>();
+        loadLoans();
+        int totalLoans = 0, notReturned = 0, lateReturns = 0;
+
+        for (Loan loan : loans) {
+            if (stuusername != null && !stuusername.isEmpty()
+                    && loan.getStudent() != null
+                    && loan.getStudent().getUsername().trim().equals(stuusername.trim())) {
+
+                loanList.add(loan);
+                totalLoans++;
+
+                if (!loan.isReturned()) {
+                    notReturned++;
+                } else if (loan.getActualReturnDate() != null && loan.getReturnDate() != null) {
+                    if (loan.getActualReturnDate().late(loan.getActualReturnDate(), loan.getReturnDate())) {
+                        lateReturns++;
+                    }
+                }
+            }
+        }
+
+        if (loanList.isEmpty()) {
+            System.out.println("No loans found for student: " + stuusername);
+        } else {
+            System.out.println("--- Loan History for " + stuusername + " ---");
+            for (Loan loan : loanList) {
+                System.out.println(loan);
+            }
+            System.out.println("Total Loans: " + totalLoans);
+            System.out.println("Not Returned: " + notReturned);
+            System.out.println("Late Returns: " + lateReturns);
+        }
+    }
 }

@@ -11,6 +11,9 @@ public class Date {
         this.day = day;
     }
 
+    public Date() {
+    }
+
     public int getYear() {
         return year;
     }
@@ -43,5 +46,24 @@ public class Date {
         return false;
     }
 
+    public boolean late(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+
+        if (date1.getYear() > date2.getYear()) {
+            return true;
+        } else if (date1.getYear() < date2.getYear()) {
+            return false;
+        }
+
+        if (date1.getMonth() > date2.getMonth()) {
+            return true;
+        } else if (date1.getMonth() < date2.getMonth()) {
+            return false;
+        }
+
+        return date1.getDay() > date2.getDay();
+    }
 }
 

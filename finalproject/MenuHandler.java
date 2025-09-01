@@ -89,9 +89,10 @@ public class MenuHandler {
             System.out.println("2. Add new book");
             System.out.println("3. Edit book information");
             System.out.println("4. Checking and confirming book loans");
-            System.out.println("5. Exit");
+            System.out.println("5. Display Student Loan State");
+            System.out.println("6. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 5);
+            int choice = getIntInput(1, 6);
             switch (choice) {
                 case 1:
                     System.out.println("Enter your Username: ");
@@ -117,6 +118,12 @@ public class MenuHandler {
                     break;
 
                 case 5:
+                    System.out.println("Enter student username: ");
+                    String stuusername = scanner.nextLine();
+                    librarySystem.studentLoanReport(stuusername);
+                    break;
+
+                case 6:
                     return;
 
                 default:
