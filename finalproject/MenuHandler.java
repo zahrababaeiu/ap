@@ -91,9 +91,10 @@ public class MenuHandler {
             System.out.println("4. Checking and confirming book loans");
             System.out.println("5. Display Student Loan State");
             System.out.println("6. Active/Deactivate");
-            System.out.println("7. Exit");
+            System.out.println("7. Get the book");
+            System.out.println("8. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 7);
+            int choice = getIntInput(1, 8);
             switch (choice) {
 
                 case 1:
@@ -113,7 +114,6 @@ public class MenuHandler {
                     break;
 
                 case 4:
-
                     List<Student> students = studentManager.getAllStudents();
                     List<Book> books = librarySystem.getBooks();
                     librarySystem.cheking(students, books);
@@ -132,6 +132,10 @@ public class MenuHandler {
                     break;
 
                 case 7:
+                    librarySystem.getLoanBooks();
+                    break;
+
+                case 8:
                     return;
 
                 default:

@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 // LibrarySystem.java
+
 public class LibrarySystem {
     private StudentManager studentManager;
     private MenuHandler menuHandler;
@@ -238,11 +239,9 @@ public class LibrarySystem {
             System.out.println("Actual return date: " + actualReturn.getYear() + "/" +
                     actualReturn.getMonth() + "/" + actualReturn.getDay());
 
-            saveLoanToFile(loanToReturn.getStudent(), loanToReturn.getBook(),
-                    loanToReturn.getBorrowDate(), loanToReturn.getReturnDate(),
-                    loanToReturn.getActualReturnDate());
 
-            saveBooksToFile(BOOKS_FILE);
+            saveLoans();
+            saveBooks();
 
         } else {
             System.out.println("No borrowed book found with this title for the student.");
@@ -560,5 +559,88 @@ public class LibrarySystem {
         }
         return false;
     }
-}
 
+    public void getLoanBooks() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the student's username: ");
+        String stuUsername = input.nextLine().trim();
+
+        System.out.print("Enter the title of the book to return: ");
+        String title = input.nextLine().trim();
+
+        Loan loanToReturn = null;
+        for (Loan loan : loans) {
+            if (loan.getStudent().getUsername().equals(stuUsername) &&
+                    loan.getBook().getTitle().equalsIgnoreCase(title) &&
+                    loan.getActualReturnDate() == null) {
+                loanToReturn = loan;
+                break;
+            }
+        }
+
+        if (loanToReturn != null) {
+            System.out.println("Enter actual return date:");
+            System.out.print("Year: ");
+            int y = input.nextInt();
+            System.out.print("Month: ");
+            int m = input.nextInt();
+            System.out.print("Day: ");
+            int d = input.nextInt();
+
+            Date actualReturn = new Date(y, m, d);
+
+            loanToReturn.setActualReturnDate(actualReturn);
+            loanToReturn.getBook().setLoaned(false);
+
+            System.out.println("Book returned successfully by librarian!");
+            System.out.println("Actual return date: " + actualReturn.getYear() + "/" +
+                    actualReturn.getMonth() + "/" + actualReturn.getDay());
+
+            saveLoans();
+            saveBooks();
+
+        } else {
+            System.out.println("No borrowed book found with this title for the student.");
+        }
+    }
+
+    private void saveBooks() {
+        try (FileWriter writer = new FileWriter(BOOKS_FILE)) {
+            for (Book book : books) {
+                writer.write(book.getTitle() + ","
+                        + book.getAuthor() + ","
+                        + book.getYear() + ","
+                        + book.isLoaned() + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving books to file: " + e.getMessage());
+        }
+    }
+
+    private void saveLoans() {
+        try (FileWriter writer = new FileWriter(LOANS_FILE)) {
+            for (Loan loan : loans) {
+                writer.write("Student Name: " + loan.getStudent().getName() +
+                        ", Student ID: " + loan.getStudent().getStudentId() +
+                        ", Username: " + loan.getStudent().getUsername() +
+                        ", Book Title: " + loan.getBook().getTitle() +
+                        ", Book Author: " + loan.getBook().getAuthor() +
+                        ", Borrow Date: " + loan.getBorrowDate().getYear() + "/" +
+                        loan.getBorrowDate().getMonth() + "/" +
+                        loan.getBorrowDate().getDay() +
+                        ", Return Date: " + loan.getReturnDate().getYear() + "/" +
+                        loan.getReturnDate().getMonth() + "/" +
+                        loan.getReturnDate().getDay());
+
+                if (loan.getActualReturnDate() != null) {
+                    writer.write(", Actual Return Date: " + loan.getActualReturnDate().getYear() + "/" +
+                            loan.getActualReturnDate().getMonth() + "/" +
+                            loan.getActualReturnDate().getDay());
+                }
+                writer.write("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving loans: " + e.getMessage());
+        }
+    }
+}
