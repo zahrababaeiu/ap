@@ -1,9 +1,7 @@
 package finalproject;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 // LibrarySystem.java
 public class LibrarySystem {
@@ -14,6 +12,7 @@ public class LibrarySystem {
     private String LOANS_FILE = "E:/loans.txt";
     private List<Loan> loans;
     private List<Librarian> librarians;
+    private final String STUDENTS_FILE = "E:/students.txt";
 
     public LibrarySystem() {
         this.studentManager = new StudentManager();
@@ -502,4 +501,64 @@ public class LibrarySystem {
             System.out.println("Late Returns: " + lateReturns);
         }
     }
+
+    public void active(String stuUsername) {
+        List<Student> students = this.studentManager.getAllStudents();
+        boolean found = false;
+
+        for (Student student : students) {
+            if (student.getUsername().equals(stuUsername)) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("State: " + (student.isActive() ? "Active" : "Deactivated"));
+                System.out.print("Active status? (yes/no): ");
+                String choice = sc.nextLine().trim().toLowerCase();
+
+                if (choice.equals("yes")) {
+                    student.setActive(true);
+                    System.out.println("Student " + stuUsername + " is now Active.");
+                } else {
+                    student.setActive(false);
+                    System.out.println("Student " + stuUsername + " is now Deactivated.");
+                }
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Student not found!");
+            return;
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(STUDENTS_FILE, false))) {
+            List<String> seenUsernames = new ArrayList<>();
+            for (Student s : students) {
+                if (!seenUsernames.contains(s.getUsername())) {
+                    bw.write(s.toFileString());
+                    bw.newLine();
+                    seenUsernames.add(s.getUsername());
+                }
+            }
+            System.out.println("Changes successfully.");
+        } catch (IOException e) {
+            System.out.println("Error saving students: " + e.getMessage());
+        }
+        System.out.println("--------------------");
+    }
+
+    public boolean chekingState(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader(STUDENTS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Student student = Student.fromString(line);
+                if (student != null && student.getUsername().equals(username)) {
+                    return student.isActive();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading students: " + e.getMessage());
+        }
+        return false;
+    }
 }
+

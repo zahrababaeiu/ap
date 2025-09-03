@@ -12,7 +12,7 @@ import java.util.stream.*;
 
 public class StudentManager {
     private List<Student> students;
-    private final String STUDENTS_FILE = "students.txt";
+    private final String STUDENTS_FILE = "E:/students.txt";
 
     public StudentManager() {
         students = new ArrayList<>();
@@ -20,7 +20,7 @@ public class StudentManager {
     }
 
     //Load from file
-    private void loadStudents() {
+    public void loadStudents() {
         File file = new File(STUDENTS_FILE);
         if (!file.exists()) return;
 
@@ -90,7 +90,7 @@ public class StudentManager {
     }
 
     public List<Student> getAllStudents() {
-        return new ArrayList<>(students);
+        return students;
 
     }
 }
