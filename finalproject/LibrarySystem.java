@@ -175,7 +175,7 @@ public class LibrarySystem {
         int rd = input.nextInt();
         Date returnDate = new Date(ry, rm, rd);
 
-        Loan loan = new Loan(student, bookToBorrow, borrowDate, returnDate, null);
+        Loan loan = new Loan(student, bookToBorrow, borrowDate, returnDate, null, null);
         loans.add(loan);
         saveLoanToFile(student, bookToBorrow, borrowDate, returnDate, null);
 
@@ -281,21 +281,28 @@ public class LibrarySystem {
         }
     }
 
-    public void addNewBook() {
+    public void addNewBook(Librarian currentLibrarian) {
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("Enter new book title:");
         String title = scanner.nextLine().trim();
+
         System.out.println("Enter new book author:");
         String author = scanner.nextLine().trim();
+
         System.out.println("Enter book year:");
         int year = scanner.nextInt();
-        Book book = new Book(title, author, year, false);
-        books.add(book);
-        saveBooksToFile(BOOKS_FILE);
-        System.out.println("Book added successfully!");
-        System.out.println("------------------------");
+        scanner.nextLine();
 
+        Book book = new Book(title, author, year, false, currentLibrarian.getLibrarianId());
+        books.add(book);
+
+        saveBooksToFile(BOOKS_FILE);
+
+        System.out.println("Book added successfully");
+        System.out.println("------------------------");
     }
+
 
     public void editBooksInformations() {
         Scanner scanner = new Scanner(System.in);
@@ -643,4 +650,31 @@ public class LibrarySystem {
             System.out.println("Error saving loans: " + e.getMessage());
         }
     }
+
+    public void showLibrarianHistory(String librarianId) {
+        int registeredBooks = 0;
+        int totalLoans = 0;
+        int totalReturns = 0;
+
+        for (Book book : books) {
+            if (book.getRegisteredBy().equals(librarianId)) {
+                registeredBooks++;
+            }
+        }
+
+        for (Loan loan : loans) {
+            if (loan.getLibrarianId().equals(librarianId)) {
+                totalLoans++;
+                if (loan.isReturned()) {
+                    totalReturns++;
+                }
+            }
+        }
+
+        System.out.println("\n---History---");
+        System.out.println(" Registered Books:" + registeredBooks);
+        System.out.println(" total Loans:" + totalLoans);
+        System.out.println(" total Returns:" + totalReturns);
+    }
 }
+

@@ -5,12 +5,14 @@ public class Book {
     private String author;
     private int year;
     private boolean loaned;
+    private String registeredBy;
 
-    public Book(String title, String author, int year, boolean loaned) {
+    public Book(String title, String author, int year, boolean loaned, String registeredBy) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.loaned = loaned;
+        this.registeredBy = registeredBy;
     }
 
     public String getTitle() {
@@ -41,24 +43,37 @@ public class Book {
         return loaned;
     }
 
+    public void setLoaned(boolean loaned) {
+        this.loaned = loaned;
+    }
+
+    public String getRegisteredBy() {
+        return registeredBy;
+    }
+
+    public void setRegisteredBy(String registeredBy) {
+        this.registeredBy = registeredBy;
+    }
+
     @Override
     public String toString() {
-        return title + " , " + author + " , " + year;
+        return title + " , " + author + " , " + year + " , Loaned: " + loaned + " , Registered by: " + registeredBy;
+    }
+
+    public String toFileString() {
+        return title + "," + author + "," + year + "," + loaned + "," + registeredBy;
     }
 
     public static Book fromString(String line) {
         String[] parts = line.split(",");
-        if (parts.length != 4) {
+        if (parts.length != 5) {
             return null;
         }
         String title = parts[0].trim();
         String author = parts[1].trim();
         int year = Integer.parseInt(parts[2].trim());
         boolean loaned = Boolean.parseBoolean(parts[3].trim());
-        return new Book(title, author, year, loaned);
-    }
-
-    public void setLoaned(boolean Loaned) {
-        this.loaned = Loaned;
+        String registeredBy = parts[4].trim();
+        return new Book(title, author, year, loaned, registeredBy);
     }
 }

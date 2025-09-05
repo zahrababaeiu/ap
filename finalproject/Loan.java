@@ -7,14 +7,16 @@ public class Loan {
     private Date returnDate;
     private boolean returned;
     private Date actualReturnDate;
+    private String librarianId;
 
-    public Loan(Student student, Book book, Date borrowDate, Date returnDate, Date actualReturnDate) {
+    public Loan(Student student, Book book, Date borrowDate, Date returnDate, Date actualReturnDate, String librarianId) {
         this.student = student;
         this.book = book;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
-        this.returned = false;
+        this.returned = (actualReturnDate != null);
         this.actualReturnDate = actualReturnDate;
+        this.librarianId = librarianId;
     }
 
     public Book getBook() {
@@ -49,6 +51,10 @@ public class Loan {
         return actualReturnDate;
     }
 
+    public String getLibrarianId() {
+        return librarianId;
+    }
+
     @Override
     public String toString() {
         String result;
@@ -66,23 +72,18 @@ public class Loan {
     }
 
     public String toFileString() {
-        String result;
-        if (returned) {
-            result = "Yes";
-        } else {
-            result = "No";
-        }
         return student.getUsername() + "," +
                 book.getTitle() + "," +
                 borrowDate.toString() + "," +
                 returnDate.toString() + "," +
-                returned + result + "," +
-                (actualReturnDate != null ? actualReturnDate.toString() : "null");
+                (returned ? "Yes" : "No") + "," +
+                (actualReturnDate != null ? actualReturnDate.toString() : "null") + "," +
+                librarianId;
     }
 
     public static Loan fromString(String line, Student student, Book book) {
         String[] parts = line.split(",");
-        if (parts.length < 6) {
+        if (parts.length < 7) {
             return null;
         }
 
@@ -112,7 +113,9 @@ public class Loan {
             );
         }
 
-        Loan loan = new Loan(student, book, borrowDate, returnDate, actualReturnDate);
+        String librarianId = parts[6];
+
+        Loan loan = new Loan(student, book, borrowDate, returnDate, actualReturnDate, librarianId);
         loan.setReturned(returned);
         return loan;
     }

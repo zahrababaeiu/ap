@@ -11,12 +11,14 @@ public class MenuHandler {
     private LibrarySystem librarySystem;
     private Student currentUser;
     private StudentManager studentManager;
+    private Librarian currentLibrarian;
 
     public MenuHandler(LibrarySystem librarySystem) {
         this.scanner = new Scanner(System.in);
         this.librarySystem = librarySystem;
         this.currentUser = null;
         this.studentManager = new StudentManager();
+        this.currentLibrarian = null;
     }
 
     public void displayMainMenu() {
@@ -106,7 +108,7 @@ public class MenuHandler {
                     break;
 
                 case 2:
-                    librarySystem.addNewBook();
+                    librarySystem.addNewBook(currentLibrarian);
                     break;
 
                 case 3:
@@ -148,14 +150,21 @@ public class MenuHandler {
         System.out.println("\n=== Admin Menu ===");
         while (true) {
             System.out.println("1. Add Librarian");
-            System.out.println("2. Exit");
+            System.out.println("2. Show Librarian Status");
+            System.out.println("3. Exit");
             System.out.print("Please enter your choice: ");
-            int choice = getIntInput(1, 2);
+            int choice = getIntInput(1, 3);
             switch (choice) {
                 case 1:
                     handleLibrarianRegistration();
                     break;
                 case 2:
+                    System.out.print("Enter Librarian ID: ");
+                    String libId = scanner.nextLine();
+                    librarySystem.showLibrarianHistory(libId);
+                    break;
+
+                case 3:
                     return;
                 default:
                     System.out.println("Invalid option! Please try again.");
