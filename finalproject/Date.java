@@ -11,9 +11,6 @@ public class Date {
         this.day = day;
     }
 
-    public Date() {
-    }
-
     public int getYear() {
         return year;
     }
@@ -65,5 +62,12 @@ public class Date {
 
         return date1.getDay() > date2.getDay();
     }
+
+    public int average(Date date) {
+        int days1 = this.year * 365 + this.month * 30 + this.day;
+        int days2 = date.year * 365 + date.month * 30 + date.day;
+        return Math.abs(days2 - days1);
+    }
+
 }
 

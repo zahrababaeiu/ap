@@ -676,5 +676,58 @@ public class LibrarySystem {
         System.out.println(" total Loans:" + totalLoans);
         System.out.println(" total Returns:" + totalReturns);
     }
+
+    public void showLoanStatistics() {
+        loadLoans();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter today's year: ");
+        int year = Integer.parseInt(scanner.nextLine().trim());
+
+        System.out.print("Enter today's month: ");
+        int month = Integer.parseInt(scanner.nextLine().trim());
+
+        System.out.print("Enter today's day: ");
+        int day = Integer.parseInt(scanner.nextLine().trim());
+
+        Date today = new Date(year, month, day);
+
+        int totalRequests = 0;
+        int totalLoansGiven = 0;
+        int totalDays = 0;
+        int countedLoans = 0;
+
+        for (Loan loan : loans) {
+            totalRequests++;
+
+            if (loan.getBorrowDate() != null) {
+                totalLoansGiven++;
+
+                Date start = loan.getBorrowDate();
+                Date end;
+                if (loan.getActualReturnDate() != null) {
+                    end = loan.getActualReturnDate();
+                } else {
+                    end = today;
+                }
+
+                int days = start.average(end);
+                totalDays += days;
+                countedLoans++;
+            }
+        }
+
+        double avgDays;
+        if (countedLoans > 0) {
+            avgDays = (double) totalDays / countedLoans;
+        } else {
+            avgDays = 0;
+        }
+
+        System.out.println("---History---");
+        System.out.println("Total loan requests: " + totalRequests);
+        System.out.println("Total loans given: " + totalLoansGiven);
+        System.out.println("Average days: " + avgDays);
+    }
 }
 

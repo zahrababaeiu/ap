@@ -94,9 +94,10 @@ public class MenuHandler {
             System.out.println("5. Display Student Loan State");
             System.out.println("6. Active/Deactivate");
             System.out.println("7. Get the book");
-            System.out.println("8. Exit");
+            System.out.println("8. show Loan Statistics");
+            System.out.println("9. Exit");
             System.out.println("Please enter your choice: ");
-            int choice = getIntInput(1, 8);
+            int choice = getIntInput(1, 9);
             switch (choice) {
 
                 case 1:
@@ -138,6 +139,10 @@ public class MenuHandler {
                     break;
 
                 case 8:
+                    librarySystem.showLoanStatistics();
+                    break;
+
+                case 9:
                     return;
 
                 default:
